@@ -5,7 +5,7 @@ export default defineConfig({
   description:
     "Typed .NET access to Tavily search, extraction, crawling, mapping, and research APIs.",
   base: process.env.GITHUB_ACTIONS
-    ? `/${process.env.GITHUB_REPOSITORY?.split("/")[1] ?? "tavily-dotnet-sdk"}/`
+    ? `/${process.env.GITHUB_REPOSITORY?.split("/")[1] ?? "tavily-dotnet"}/`
     : "/",
   cleanUrls: true,
   appearance: true,
@@ -17,7 +17,7 @@ export default defineConfig({
       { text: "Reference", link: "/reference/errors" },
       {
         text: "GitHub",
-        link: "https://github.com/mehdihadeli/tavily-dotnet-sdk",
+        link: "https://github.com/mehdihadeli/tavily-dotnet",
       },
     ],
     sidebar: {

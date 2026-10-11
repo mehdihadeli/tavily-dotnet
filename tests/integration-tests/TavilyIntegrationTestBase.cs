@@ -1,4 +1,4 @@
-using AgentSkillsMcp.Tavily;
+using Tavily.Net;
 
 namespace AgentSkillsMcp.Search.Tests;
 

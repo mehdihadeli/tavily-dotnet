@@ -1,6 +1,6 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="src/Tavily.csproj" />
+    <Project Path="src/Tavily.Net.csproj" />
   </Folder>
   <Folder Name="/tests/" />
   <Folder Name="/tests/integration-tests/">
