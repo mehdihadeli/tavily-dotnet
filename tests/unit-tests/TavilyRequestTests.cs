@@ -1,6 +1,6 @@
 using System.Net.Http.Json;
 using System.Text.Json;
-using AgentSkillsMcp.Tavily;
+using Tavily.Net;
 using Shouldly;
 using Xunit;
 

@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace AgentSkillsMcp.Tavily;
+namespace Tavily.Net;
 
 public class TavilyException : Exception
 {

@@ -1,12 +1,13 @@
 # Tavily .NET package
 
-`Tavily` is a handwritten .NET client for the Tavily API. The public namespace
-is `AgentSkillsMcp.Tavily`.
+`Tavily.Net` is a community-maintained .NET client for the Tavily API, not an
+official Tavily package. The public namespace
+is `Tavily.Net`.
 
 ## Installation
 
 ```bash
-dotnet add package Tavily
+dotnet add package Tavily.Net --prerelease
 ```
 
 The package targets `netstandard2.0`, `net472`, and `net10.0`.
@@ -16,7 +17,7 @@ The package targets `netstandard2.0`, `net472`, and `net10.0`.
 Provide an API key explicitly:
 
 ```csharp
-using AgentSkillsMcp.Tavily;
+using Tavily.Net;
 
 using var httpClient = new HttpClient();
 var client = new TavilyClient(httpClient, "tvly-YOUR_API_KEY");
@@ -165,7 +166,7 @@ The package provides typed exceptions for common failures, including:
 Build the complete solution:
 
 ```bash
-dotnet build Tavily.slnx
+dotnet build Tavily.Net.slnx
 ```
 
 Run unit tests:

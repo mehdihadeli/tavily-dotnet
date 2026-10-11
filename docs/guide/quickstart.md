@@ -1,11 +1,11 @@
 # Quickstart
 
-Install the `Tavily` package, create a client, and send a typed search request.
+Install the `Tavily.Net` package, create a client, and send a typed search request.
 
 ## Install
 
 ```bash
-dotnet add package Tavily
+dotnet add package Tavily.Net --prerelease
 ```
 
 The package targets .NET 10, .NET Framework 4.7.2, and .NET Standard 2.0.
@@ -15,7 +15,7 @@ The package targets .NET 10, .NET Framework 4.7.2, and .NET Standard 2.0.
 Pass an `HttpClient` and your Tavily API key:
 
 ```csharp
-using AgentSkillsMcp.Tavily;
+using Tavily.Net;
 
 using var httpClient = new HttpClient();
 var client = new TavilyClient(httpClient, "tvly-YOUR_API_KEY");

@@ -1,4 +1,8 @@
-# Tavily .NET SDK
+# 🔎 Tavily .NET SDK
+
+[![NuGet](https://img.shields.io/nuget/vpre/Tavily.Net.svg)](https://www.nuget.org/packages/Tavily.Net)
+[![Build and test](https://github.com/mehdihadeli/tavily-dotnet/actions/workflows/build-and-publish.yml/badge.svg)](https://github.com/mehdihadeli/tavily-dotnet/actions/workflows/build-and-publish.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 Use Tavily search, extraction, crawling, mapping, research, and usage APIs from
 .NET applications with strongly typed requests and responses.
@@ -6,37 +10,67 @@ Use Tavily search, extraction, crawling, mapping, research, and usage APIs from
 The package supports .NET 10, .NET Framework 4.7.2, and .NET Standard 2.0. It
 also provides `Microsoft.Extensions.AI` tools for search and extraction.
 
+> [!NOTE]
+> `Tavily.Net` is a community-maintained SDK, not an official Tavily package.
+
 API coverage follows the official [Tavily OpenAPI specification](https://docs.tavily.com/documentation/api-reference/openapi.json).
 
-## Installation
+## 🚀 Quick Start
 
-Add the package reference to your application:
+Install the preview package:
 
 ```bash
-dotnet add package Tavily
+dotnet add package Tavily.Net --prerelease
 ```
 
-The library targets `netstandard2.0`, `net472`, and `net10.0`, so it can be
-used from modern .NET applications, .NET Framework 4.7.2 applications, and
-other .NET Standard-compatible projects.
+Create a client and search:
 
-## Authentication
+```csharp
+using Tavily.Net;
+
+using var httpClient = new HttpClient();
+var client = new TavilyClient(httpClient, "tvly-YOUR_API_KEY");
+
+var response = await client.SearchAsync(new TavilySearchRequest
+{
+  Query = "latest .NET release",
+  MaxResults = 5,
+  IncludeAnswer = "advanced",
+});
+
+foreach (var result in response.Results)
+{
+  Console.WriteLine($"{result.Title}: {result.Url}");
+}
+```
+
+The NuGet package is `Tavily.Net`; its public namespace is
+`Tavily.Net`.
+
+## ✨ Features
+
+- **API coverage:** Search, Extract, Crawl, Map, Research, usage, logs, and
+  organization usage, plus feedback and company-information helpers.
+- **AI integration:** `Microsoft.Extensions.AI` search and extraction tools,
+  RAG context, and question-answer helpers.
+- **Typed operations:** Request and response models, snake-case JSON,
+  cancellation tokens, and typed API exceptions.
+- **Flexible configuration:** Injected `HttpClient`, custom transport and base
+  address, and API keys from constructors, environment variables, or `.env`.
+- **Framework support:** .NET 10, .NET Framework 4.7.2, and .NET Standard 2.0.
+
+## 🔐 Authentication
 
 The SDK requires a Tavily API key. Pass it directly, set `TAVILY_API_KEY` in
 the process environment, or place it in a `.env` file. Explicit constructor
 values take precedence over environment values.
 
-```csharp
-using AgentSkillsMcp.Tavily;
-
-var client = new TavilyClient(new HttpClient(), "tvly-YOUR_API_KEY");
-```
-
 For local development, the client searches for `.env` from the current
 directory upward through its parent directories:
 
 ```csharp
-var client = new TavilyClient(new HttpClient());
+using var httpClient = new HttpClient();
+var client = new TavilyClient(httpClient);
 ```
 
 Example `.env`:
@@ -45,53 +79,26 @@ Example `.env`:
 TAVILY_API_KEY=tvly-YOUR_API_KEY
 ```
 
-Add `.env` to `.gitignore`. Unlike the Python SDK, this implementation does
-not support keyless mode; constructing a client without a resolvable key
-throws `MissingApiKeyException`.
+> [!WARNING]
+> Never commit API keys. Add `.env` to `.gitignore` and keep real credentials
+> out of source files and logs.
 
-The SDK currently covers:
-
-- `POST /search` through `ITavilyClient.SearchAsync`.
-- `POST /extract` through `ITavilyClient.ExtractAsync`.
-- `POST /crawl` through `ITavilyClient.CrawlAsync`.
-- `POST /map` through `ITavilyClient.MapAsync`.
-- `POST /research` and `GET /research/{request_id}` through
-  `ResearchAsync` and `GetResearchAsync`.
-- `GET /usage`, `POST /logs`, and `POST /org-usage` through
-  `GetUsageAsync`, `GetLogsAsync`, and `GetOrganizationUsageAsync`.
-- Python SDK-compatible `POST /feedback` through `SubmitFeedbackAsync` and the
-  `GetCompanyInfoAsync` aggregation helper.
-- `GetSearchContextAsync` and `QnaSearchAsync` convenience operations backed by
-  Search.
-- `AsSearchTool()` and `AsExtractTool()` Microsoft.Extensions.AI
-  `AIFunction` wrappers.
-
-The library targets `netstandard2.0`, `net472`, and `net10.0`.
-
-## Supported features
-
-- .NET Standard 2.0, .NET Framework 4.7.2, and .NET 10.0 targets.
-- Microsoft.Extensions.AI `AIFunction` wrappers through `AsSearchTool()` and
-  `AsExtractTool()`.
-- Tavily Search, Extract, Crawl, Map, and Research API operations.
-- Tavily usage, logs, and organization usage operations from the official
-  OpenAPI specification.
-- Search context and question-answer convenience methods.
-- Feedback submission and company-information aggregation convenience methods.
-- Bearer-token authentication with `TAVILY_API_KEY` environment and `.env`
-  file resolution.
-- Typed request and response models with snake-case JSON serialization.
-- Cancellation-token support on every asynchronous operation.
-- Typed errors for invalid keys, bad requests, forbidden access, usage limits,
-  keyless limits, missing keys, and request timeouts.
-- Injected `HttpClient` support, including custom base addresses and configured
-  transport behavior.
+Unlike the Python SDK, this implementation does not support keyless mode;
+constructing a client without a resolvable key throws `MissingApiKeyException`.
 
 The client sends the API key as a bearer token and defaults to Tavily's
 OpenAPI server, `https://api.tavily.com/`. Supply an `HttpClient` with a
 custom base address when needed.
 
-## API capabilities
+## 🧭 API Capabilities
+
+| Goal | Client methods | Endpoints |
+| --- | --- | --- |
+| Search and extract content | `SearchAsync`, `ExtractAsync` | `POST /search`, `POST /extract` |
+| Explore a website | `CrawlAsync`, `MapAsync` | `POST /crawl`, `POST /map` |
+| Submit and poll research | `ResearchAsync`, `GetResearchAsync` | `POST /research`, `GET /research/{request_id}` |
+| Inspect usage and activity | `GetUsageAsync`, `GetLogsAsync`, `GetOrganizationUsageAsync` | `GET /usage`, `POST /logs`, `POST /org-usage` |
+| Send feedback | `SubmitFeedbackAsync` | Python SDK-compatible `POST /feedback` |
 
 `TavilySearchRequest` supports search depth, topics, time ranges, date and
 published-date filters, result limits, domain filters, domain filter mode,
@@ -111,10 +118,10 @@ organization-level usage aggregates. The response models include endpoint
 results, failures, images, sources, usage metrics, request IDs, masked log
 metadata, organization filters, and per-key usage summaries.
 
-## Client usage
+## 🧰 Client Usage
 
 All client methods are asynchronous and accept an optional
-`CancellationToken`:
+`CancellationToken`. The examples below use a token supplied by the caller:
 
 ```csharp
 var search = await client.SearchAsync(new TavilySearchRequest
@@ -254,30 +261,15 @@ var context = await client.GetSearchContextAsync(
 var answer = await client.QnaSearchAsync("What is .NET?", cancellationToken);
 ```
 
-Research results can request usage details while polling:
-
-```csharp
-var result = await client.GetResearchAsync(
-  requestId,
-  cancellationToken,
-  includeUsage: true);
-```
-
 The company-information helper runs searches for news, general, and finance,
-then merges, ranks, and limits the returned results. `GetSearchContextAsync`
-returns serialized URL/content context, while `QnaSearchAsync` returns Tavily's
-answer text.
+then merges, ranks, and limits the returned results.
 
-When no key is passed, the client resolves `TAVILY_API_KEY` from the process
-environment and then from `.env` files starting at the current directory and
-walking up its parents. Explicit constructor values take precedence over both.
-Keep `.env` at the application or repository root, outside this shared folder,
-and add it to `.gitignore`.
+## 🤖 AI Tools
 
-Example:
+Expose Tavily search and extraction as `Microsoft.Extensions.AI` functions:
 
 ```csharp
-using AgentSkillsMcp.Tavily;
+using Tavily.Net;
 using Microsoft.Extensions.AI;
 
 var client = new TavilyClient(httpClient, tavilyApiKey);
@@ -285,7 +277,7 @@ AIFunction searchTool = client.AsSearchTool();
 AIFunction extractTool = client.AsExtractTool();
 ```
 
-The search tool also supports the guide's optional controls:
+Configure the search tool's optional controls:
 
 ```csharp
 AIFunction searchTool = client.AsSearchTool(
@@ -294,7 +286,7 @@ AIFunction searchTool = client.AsSearchTool(
   includeAnswer: true);
 ```
 
-### Custom HTTP clients
+## ⚙️ HTTP Configuration
 
 Inject an `HttpClient` to configure the transport, proxy, handler, timeout, or
 base address:
@@ -313,15 +305,22 @@ The SDK always applies the resolved Tavily key as a bearer token. It does not
 currently provide the Python SDK's externally-authenticated session mode or
 client-level `project_id`, `session_id`, `human_id`, and `client_name` options.
 
-## Build validation
+## 🛡️ Error Handling
+
+The SDK exposes typed exceptions for invalid keys, bad requests, forbidden
+access, usage limits, keyless limits, missing keys, and request timeouts.
+See the [error reference](docs/reference/errors.md) for exception types and
+handling guidance.
+
+## 🏗️ Build Validation
 
 Build the complete solution, including source and test projects, with:
 
 ```bash
-dotnet build Tavily.slnx
+dotnet build Tavily.Net.slnx
 ```
 
-## Tests
+## 🧪 Tests
 
 Tests use xUnit v3 with the Microsoft.Testing.Platform runner and Shouldly
 assertions. Shared test settings live in `tests/Directory.Build.props`.
@@ -349,7 +348,15 @@ dotnet test --project \
 Without `TAVILY_API_KEY`, integration tests are discovered but skipped so
 ordinary test runs do not spend API credits.
 
-## Documentation
+## 📚 Documentation
+
+| Guide | Contents |
+| --- | --- |
+| [Quickstart](docs/guide/quickstart.md) | Installation and first search |
+| [Authentication](docs/guide/authentication.md) | API keys and `.env` resolution |
+| [Capabilities](docs/guide/capabilities.md) | Search, extraction, crawling, mapping, and research |
+| [AI tools](docs/guide/ai-tools.md) | `Microsoft.Extensions.AI` function wrappers |
+| [Versioning](docs/guide/versioning.md) | Preview, RC, stable, and release workflow |
 
 The [VitePress documentation](docs/index.md) contains the rendered-site
 source, including the quickstart, authentication, API capabilities, AI
@@ -368,12 +375,13 @@ For endpoint parameters and server behavior, see the [Tavily API
 reference](https://docs.tavily.com/documentation/api-reference) and the
 [official OpenAPI specification](https://docs.tavily.com/documentation/api-reference/openapi.json).
 
-## Cost
+## 💳 API Credits
 
 Tavily API calls consume credits according to your Tavily plan. Review the
 [Tavily credits and pricing documentation](https://docs.tavily.com/documentation/api-credits)
 before running live integration tests or high-volume workflows.
 
-## License
+
+## 📄 License
 
 This project is licensed under the terms of the [MIT license](LICENSE).

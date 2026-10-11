@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Tavily.csproj" />
+    <ProjectReference Include="..\..\src\Tavily.Net.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 using System.Net;
-using AgentSkillsMcp.Tavily;
+using Tavily.Net;
 using Shouldly;
 using Xunit;
 

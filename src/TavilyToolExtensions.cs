@@ -1,6 +1,6 @@
 using Microsoft.Extensions.AI;
 
-namespace AgentSkillsMcp.Tavily;
+namespace Tavily.Net;
 
 public static class TavilyToolExtensions
 {

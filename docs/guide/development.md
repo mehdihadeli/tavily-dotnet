@@ -5,7 +5,7 @@ The repository uses a .NET 10 SDK and an `.slnx` solution file.
 ## Build
 
 ```bash
-dotnet build Tavily.slnx
+dotnet build Tavily.Net.slnx
 ```
 
 ## Unit tests

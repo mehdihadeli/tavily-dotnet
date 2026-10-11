@@ -1,4 +1,4 @@
-namespace AgentSkillsMcp.Tavily;
+namespace Tavily.Net;
 
 public static class TavilyApiKeyResolver
 {
