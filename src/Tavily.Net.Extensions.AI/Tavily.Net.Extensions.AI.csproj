@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>Tavily.Net.Extensions.AI</PackageId>
+    <Title>Tavily .NET SDK Microsoft.Extensions.AI integration</Title>
+    <Authors>Mehdi Hadeli and contributors</Authors>
+    <Description>Microsoft.Extensions.AI tool integrations for the Tavily .NET SDK.</Description>
+    <PackageTags>tavily;dotnet;sdk;api-client;search;extract;ai;Microsoft.Extensions.AI</PackageTags>
+    <PackageProjectUrl>https://github.com/mehdihadeli/tavily-dotnet</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/mehdihadeli/tavily-dotnet</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>preview</LangVersion>
+    <TargetFrameworks>netstandard2.0;net472;net10.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tavily.Net\Tavily.Net.csproj" />
+    <PackageReference Include="Microsoft.Extensions.AI" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="README.md" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'net10.0'">
+    <PackageReference Include="System.Net.Http.Json" />
+    <PackageReference Include="System.Text.Json" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" PrivateAssets="all" />
+  </ItemGroup>
+
+  <Target Name="SetReleasePackageVersion" BeforeTargets="GenerateNuspec" DependsOnTargets="GetBuildVersion" Condition="'$(ReleasePackageVersion)' != ''">
+    <PropertyGroup>
+      <PackageVersion>$(ReleasePackageVersion)</PackageVersion>
+    </PropertyGroup>
+  </Target>
+
+</Project>

@@ -1,12 +1,27 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="src/Tavily.Net.csproj" />
+    <Project Path="src/Tavily.Net/Tavily.Net.csproj" />
+    <Project Path="src/Tavily.Net.Extensions.AI/Tavily.Net.Extensions.AI.csproj" />
+  </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/Tavily.Net.Samples/Tavily.Net.Samples.csproj" />
+  </Folder>
+  <Folder Name="/samples/Tavily.Net.Extensions.AI.Samples/">
+    <Project Path="samples/Tavily.Net.Extensions.AI.Samples/Tavily.Net.Extensions.AI.Samples.csproj" />
   </Folder>
   <Folder Name="/tests/" />
-  <Folder Name="/tests/integration-tests/">
-    <Project Path="tests/integration-tests/Tavily.IntegrationTests.csproj" />
+  <Folder Name="/tests/Tavily.Net/UnitTests/">
+    <Project Path="tests/Tavily.Net/UnitTests/Tavily.Net.UnitTests.csproj" />
   </Folder>
-  <Folder Name="/tests/unit-tests/">
-    <Project Path="tests/unit-tests/Tavily.UnitTests.csproj" />
+  <Folder Name="/tests/Tavily.Net/" />
+  <Folder Name="/tests/Tavily.Net/IntegrationTests/">
+    <Project Path="tests/Tavily.Net/IntegrationTests/Tavily.Net.IntegrationTests.csproj" />
+  </Folder>
+  <Folder Name="/tests/Tavily.Net.Extensions.AI/UnitTests/">
+    <Project Path="tests/Tavily.Net.Extensions.AI/UnitTests/Tavily.Net.Extensions.AI.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/tests/Tavily.Net.Extensions.AI/" />
+  <Folder Name="/tests/Tavily.Net.Extensions.AI/IntegrationTests/">
+    <Project Path="tests/Tavily.Net.Extensions.AI/IntegrationTests/Tavily.Net.Extensions.AI.IntegrationTests.csproj" />
   </Folder>
 </Solution>

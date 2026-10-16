@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>Tavily.Net</PackageId>
+    <Title>Tavily .NET SDK</Title>
+    <Authors>Mehdi Hadeli and contributors</Authors>
+    <Description>Community-maintained .NET SDK for the Tavily API with strongly typed search, extraction, crawling, mapping, research, and usage operations. Supports .NET Standard 2.0, .NET Framework 4.7.2, and .NET 10.</Description>
+    <PackageTags>tavily;dotnet;sdk;api-client;search;web-search;extract;crawl;research;rag</PackageTags>
+    <PackageProjectUrl>https://github.com/mehdihadeli/tavily-dotnet</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/mehdihadeli/tavily-dotnet</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>preview</LangVersion>
+    <TargetFrameworks>netstandard2.0;net472;net10.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="README.md" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'net10.0'">
+    <PackageReference Include="System.Net.Http" />
+    <PackageReference Include="System.Net.Http.Json" />
+    <PackageReference Include="System.Text.Json" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" PrivateAssets="all" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+
+  <Target Name="SetReleasePackageVersion" BeforeTargets="GenerateNuspec" DependsOnTargets="GetBuildVersion" Condition="'$(ReleasePackageVersion)' != ''">
+    <PropertyGroup>
+      <PackageVersion>$(ReleasePackageVersion)</PackageVersion>
+    </PropertyGroup>
+  </Target>
+
+</Project>
