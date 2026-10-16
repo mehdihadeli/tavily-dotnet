@@ -4,10 +4,9 @@ The companion `Tavily.Net.Extensions.AI` package provides
 `Microsoft.Extensions.AI` `AIFunction` wrappers for search and extraction. It
 depends on `Tavily.Net` and uses the same authenticated `TavilyClient`.
 
-Install both packages:
+Install the optional integration package. It depends on the core package:
 
 ```bash
-dotnet add package Tavily.Net --prerelease
 dotnet add package Tavily.Net.Extensions.AI --prerelease
 ```
 
@@ -30,3 +29,6 @@ AIFunction searchTool = client.AsSearchTool(
 Pass the resulting functions to the agent or chat client that supports
 `AIFunction` tools. Tool execution remains subject to the same API key,
 timeout, cancellation, and Tavily account limits as direct client calls.
+
+See the [samples guide](/guide/samples) for runnable search and extraction
+tool examples.

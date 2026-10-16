@@ -22,7 +22,6 @@ export default defineConfig({
     ],
     sidebar: {
       "/guide/": [
-        { text: "Versioning and releases", link: "/guide/versioning" },
         {
           text: "Get started",
           items: [
@@ -30,18 +29,10 @@ export default defineConfig({
             { text: "Authentication", link: "/guide/authentication" },
             { text: "API capabilities", link: "/guide/capabilities" },
             { text: "AI tool wrappers", link: "/guide/ai-tools" },
+            { text: "Samples", link: "/guide/samples" },
           ],
         },
-        {
-          text: "Project workflow",
-          items: [
-            {
-              text: "HTTP clients and cancellation",
-              link: "/guide/http-client",
-            },
-            { text: "Build and test", link: "/guide/development" },
-          ],
-        },
+        { text: "HTTP clients and cancellation", link: "/guide/http-client" },
       ],
       "/reference/": [
         {

@@ -35,8 +35,8 @@ var client = new TavilyClient(new HttpClient());
 ```
 
 The `.env` file is searched from the current directory through its parents.
-Never commit API keys; add `.env` to `.gitignore`. Keyless mode is not
-supported by this package.
+Never commit API keys; add `.env` to `.gitignore`. Search and extraction also
+support Tavily keyless mode. Other operations require an API key.
 
 ## API operations
 
@@ -160,29 +160,6 @@ The package provides typed exceptions for common failures, including:
 - `TavilyKeylessLimitException`
 - `TavilyTimeoutException`
 - `KeylessUnsupportedEndpointException`
-
-## Build and test
-
-Build the complete solution:
-
-```bash
-dotnet build Tavily.Net.slnx
-```
-
-Run unit tests:
-
-```bash
-dotnet test tests/unit-tests/Tavily.UnitTests.csproj
-```
-
-Integration tests use a real Tavily API key from `TAVILY_API_KEY` or `.env`:
-
-```bash
-dotnet test tests/integration-tests/Tavily.IntegrationTests.csproj
-```
-
-Some administrative and log operations require the appropriate Tavily plan or
-organization permissions.
 
 ## API reference
 
