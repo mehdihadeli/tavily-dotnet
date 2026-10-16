@@ -1,27 +1,99 @@
-# 🔎 Tavily .NET SDK
+# Tavily .NET SDK
 
-[![NuGet](https://img.shields.io/nuget/vpre/Tavily.Net.svg)](https://www.nuget.org/packages/Tavily.Net)
-[![Build and test](https://github.com/mehdihadeli/tavily-dotnet/actions/workflows/build-and-publish.yml/badge.svg)](https://github.com/mehdihadeli/tavily-dotnet/actions/workflows/build-and-publish.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![build-test-publish](https://img.shields.io/github/actions/workflow/status/mehdihadeli/tavily-dotnet/build-and-publish.yml?branch=main&style=for-the-badge&label=build-test-publish)](https://github.com/mehdihadeli/tavily-dotnet/actions/workflows/build-and-publish.yml)
+[![License](https://img.shields.io/github/license/mehdihadeli/tavily-dotnet?style=for-the-badge)](LICENSE)
+[![.NET](https://img.shields.io/badge/.NET%20Standard%202.0%20%7C%20.NET%20Framework%204.7.2%20%7C%20.NET%2010-512bd4?style=for-the-badge)](https://dotnet.microsoft.com/platform/dotnet)
 
-Use Tavily search, extraction, crawling, mapping, research, and usage APIs from
-.NET applications with strongly typed requests and responses.
+[![Tavily.Net](https://img.shields.io/nuget/v/Tavily.Net?style=for-the-badge&color=blue&label=Tavily.Net)](https://www.nuget.org/packages/Tavily.Net)
+[![Tavily.Net.Extensions.AI](https://img.shields.io/nuget/v/Tavily.Net.Extensions.AI?style=for-the-badge&color=blue&label=Tavily.Net.Extensions.AI)](https://www.nuget.org/packages/Tavily.Net.Extensions.AI)
 
-The package supports .NET 10, .NET Framework 4.7.2, and .NET Standard 2.0. It
-also provides `Microsoft.Extensions.AI` tools for search and extraction.
+**Tavily .NET SDK** is a community-maintained .NET client for Tavily search,
+extraction, crawling, mapping, research, usage, logs, and feedback APIs.
+Requests and responses are strongly typed and all operations are asynchronous.
+
+The libraries target .NET Standard 2.0, .NET Framework 4.7.2, and .NET 10.
+Install the core package for native Tavily API calls, or add the optional AI
+package for `Microsoft.Extensions.AI` tool interoperability.
 
 > [!NOTE]
-> `Tavily.Net` is a community-maintained SDK, not an official Tavily package.
+> This is a community-maintained SDK, not an official Tavily package. API
+> coverage follows the official [Tavily OpenAPI specification](https://docs.tavily.com/documentation/api-reference/openapi.json).
 
-API coverage follows the official [Tavily OpenAPI specification](https://docs.tavily.com/documentation/api-reference/openapi.json).
+## How It Works
 
-## 🚀 Quick Start
+1. Provide a Tavily API key through options, the `TAVILY_API_KEY` environment
+  variable, or a local `.env` file.
+2. Create a `TavilyClient` with an injected or SDK-created `HttpClient`.
+3. Send a typed request such as `TavilySearchRequest` or
+  `TavilyExtractRequest`.
+4. Consume the typed response, including results, citations, usage, request IDs,
+  and endpoint-specific metadata.
 
-Install the preview package:
+> [!IMPORTANT]
+> Requests are sent to Tavily's configured API endpoint. The SDK does not run
+> models locally. Review request state and avoid sending credentials or
+> unnecessary personal data.
+
+## Packages
+
+| Package | Description | Latest NuGet |
+| --- | --- | --- |
+| [`Tavily.Net`](https://www.nuget.org/packages/Tavily.Net) | Core typed client for Tavily search, extraction, crawling, mapping, research, usage, logs, and feedback APIs. | [![Tavily.Net](https://img.shields.io/nuget/v/Tavily.Net?style=for-the-badge&color=blue&label=Tavily.Net)](https://www.nuget.org/packages/Tavily.Net) |
+| [`Tavily.Net.Extensions.AI`](https://www.nuget.org/packages/Tavily.Net.Extensions.AI) | Optional `Microsoft.Extensions.AI` integration exposing `AIFunction` tools for Tavily search and extraction. | [![Tavily.Net.Extensions.AI](https://img.shields.io/nuget/v/Tavily.Net.Extensions.AI?style=for-the-badge&color=blue&label=Tavily.Net.Extensions.AI)](https://www.nuget.org/packages/Tavily.Net.Extensions.AI) |
+
+Install `Tavily.Net` for direct typed API access. Add
+`Tavily.Net.Extensions.AI` when an application uses
+`Microsoft.Extensions.AI` tool-calling pipelines. The AI package builds on the
+core client and does not replace it.
+
+Each package has its own NuGet README:
+
+- [Core SDK README](src/Tavily.Net/README.md)
+- [Microsoft.Extensions.AI README](src/Tavily.Net.Extensions.AI/README.md)
+
+## Samples
+
+Runnable examples for every client capability are in [samples/README.md](samples/README.md).
+The core sample includes commands for search, extraction, crawling, mapping,
+research polling and streaming, usage, logs, organization usage, feedback,
+company information, search context, and Q&A. A separate sample project covers
+the optional `Microsoft.Extensions.AI` tools.
+
+Run an example from the repository root:
 
 ```bash
-dotnet add package Tavily.Net --prerelease
+dotnet run --project samples/Tavily.Net.Samples -- search
 ```
+
+For the AI integration sample:
+
+```bash
+dotnet run --project samples/Tavily.Net.Extensions.AI.Samples -- search-tool
+```
+
+Most samples call the live Tavily API and read `TAVILY_API_KEY` from the
+environment or a local `.env` file. See the samples guide for the complete
+command list and required environment variables.
+
+## Installation
+
+Install the core package for direct typed Tavily API access:
+
+```bash
+dotnet add package Tavily.Net
+```
+
+Add the optional integration package only when the application uses
+`Microsoft.Extensions.AI`:
+
+```bash
+dotnet add package Tavily.Net.Extensions.AI
+```
+
+For unreleased versions, append `--prerelease` to either command. Both package
+identities are published separately; the AI package depends on the core package.
+
+## Quick Start
 
 Create a client and search:
 
@@ -44,15 +116,35 @@ foreach (var result in response.Results)
 }
 ```
 
-The NuGet package is `Tavily.Net`; its public namespace is
-`Tavily.Net`.
+The package identity and public namespace are both `Tavily.Net`.
+
+### Microsoft.Extensions.AI tools
+
+Install the companion package when using Tavily as an AI function tool:
+
+```bash
+dotnet add package Tavily.Net.Extensions.AI
+```
+
+Then create tools from the same `TavilyClient`:
+
+```csharp
+using Microsoft.Extensions.AI;
+
+AIFunction searchTool = client.AsSearchTool();
+AIFunction extractTool = client.AsExtractTool();
+```
+
+The AI package depends on `Tavily.Net` and adds no replacement client. It keeps
+`Microsoft.Extensions.AI` optional for applications that do not use tool
+calling.
 
 ## ✨ Features
 
 - **API coverage:** Search, Extract, Crawl, Map, Research, usage, logs, and
   organization usage, plus feedback and company-information helpers.
-- **AI integration:** `Microsoft.Extensions.AI` search and extraction tools,
-  RAG context, and question-answer helpers.
+- **AI integration:** Optional `Microsoft.Extensions.AI` search and extraction
+  tools through `Tavily.Net.Extensions.AI`.
 - **Typed operations:** Request and response models, snake-case JSON,
   cancellation tokens, and typed API exceptions.
 - **Flexible configuration:** Injected `HttpClient`, custom transport and base
@@ -61,9 +153,10 @@ The NuGet package is `Tavily.Net`; its public namespace is
 
 ## 🔐 Authentication
 
-The SDK requires a Tavily API key. Pass it directly, set `TAVILY_API_KEY` in
-the process environment, or place it in a `.env` file. Explicit constructor
-values take precedence over environment values.
+The SDK accepts a Tavily API key for all operations, or can run in keyless mode
+for `SearchAsync` and `ExtractAsync`. Pass the key directly, set
+`TAVILY_API_KEY` in the process environment, or place it in a `.env` file.
+Explicit constructor values take precedence over environment values.
 
 For local development, the client searches for `.env` from the current
 directory upward through its parent directories:
@@ -83,8 +176,8 @@ TAVILY_API_KEY=tvly-YOUR_API_KEY
 > Never commit API keys. Add `.env` to `.gitignore` and keep real credentials
 > out of source files and logs.
 
-Unlike the Python SDK, this implementation does not support keyless mode;
-constructing a client without a resolvable key throws `MissingApiKeyException`.
+In keyless mode, only search and extraction are available. Other operations
+throw `KeylessUnsupportedEndpointException` before sending a request.
 
 The client sends the API key as a bearer token and defaults to Tavily's
 OpenAPI server, `https://api.tavily.com/`. Supply an `HttpClient` with a
@@ -204,6 +297,7 @@ var map = await client.MapAsync(new TavilyMapRequest
   Url = "https://docs.tavily.com",
   MaxDepth = 2,
   Limit = 20,
+  IncludeImages = true,
 }, cancellationToken);
 ```
 
@@ -228,8 +322,23 @@ Console.WriteLine($"Status: {result.Status}");
 Console.WriteLine(result.Content);
 ```
 
-The .NET client exposes polling through `GetResearchAsync`; it does not expose
-the Python SDK's streaming research iterator.
+The .NET client exposes polling through `GetResearchAsync` and streaming through
+`StreamResearchAsync`:
+
+```csharp
+await foreach (var chunk in client.StreamResearchAsync(
+  new TavilyResearchRequest
+  {
+    Input = "Research the latest developments in AI",
+  },
+  cancellationToken))
+{
+  Console.WriteLine(chunk);
+}
+```
+
+Use `StreamResearchAsync` instead of setting `TavilyResearchRequest.Stream`
+when consuming streaming research responses.
 
 ### Feedback and convenience helpers
 
@@ -312,41 +421,54 @@ access, usage limits, keyless limits, missing keys, and request timeouts.
 See the [error reference](docs/reference/errors.md) for exception types and
 handling guidance.
 
-## 🏗️ Build Validation
-
-Build the complete solution, including source and test projects, with:
-
-```bash
-dotnet build Tavily.Net.slnx
-```
-
-## 🧪 Tests
+## Development and Tests
 
 Tests use xUnit v3 with the Microsoft.Testing.Platform runner and Shouldly
 assertions. Shared test settings live in `tests/Directory.Build.props`.
 
-The test layout is split into:
+The test layout is split by package and test type:
 
-- `tests/unit-tests/Tavily.UnitTests.csproj` for isolated HTTP
-  handler, serialization, authentication, wrapper, and exception tests.
-- `tests/integration-tests/Tavily.IntegrationTests.csproj` for
-  live Tavily API checks enabled when `TAVILY_API_KEY` is available.
+- `tests/Tavily.Net/UnitTests` contains deterministic core client tests.
+- `tests/Tavily.Net/IntegrationTests` contains live core API checks.
+- `tests/Tavily.Net.Extensions.AI/UnitTests` contains deterministic AI adapter tests.
+- `tests/Tavily.Net.Extensions.AI/IntegrationTests` contains live AI tool checks.
 
-Run unit tests with:
+Build the complete solution with:
 
 ```bash
-dotnet test --project tests/unit-tests/Tavily.UnitTests.csproj
+dotnet build Tavily.Net.slnx --configuration Release
+```
+
+Run the core unit tests with:
+
+```bash
+dotnet test --project tests/Tavily.Net/UnitTests/Tavily.Net.UnitTests.csproj
+```
+
+Run the AI unit tests with:
+
+```bash
+dotnet test --project tests/Tavily.Net.Extensions.AI/UnitTests/Tavily.Net.Extensions.AI.UnitTests.csproj
 ```
 
 Run live integration tests with:
 
 ```bash
-dotnet test --project \
-  tests/integration-tests/Tavily.IntegrationTests.csproj
+dotnet test --project tests/Tavily.Net/IntegrationTests/Tavily.Net.IntegrationTests.csproj
+dotnet test --project tests/Tavily.Net.Extensions.AI/IntegrationTests/Tavily.Net.Extensions.AI.IntegrationTests.csproj
 ```
 
-Without `TAVILY_API_KEY`, integration tests are discovered but skipped so
-ordinary test runs do not spend API credits.
+Integration tests require `TAVILY_API_KEY` and may spend API credits. Without
+the key, live tests are skipped.
+
+Pack both packages locally without publishing them:
+
+```bash
+dotnet pack Tavily.Net.slnx --configuration Release --output artifacts
+```
+
+The solution also contains the runnable project under
+`samples/Tavily.Net.Samples`.
 
 ## 📚 Documentation
 

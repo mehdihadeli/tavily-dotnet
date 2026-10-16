@@ -35,12 +35,19 @@ jobs:
       - name: Build
         run: dotnet build Tavily.Net.slnx --configuration Release --no-restore
 
-      - name: Test unit tests
-        run: dotnet test tests/unit-tests/Tavily.UnitTests.csproj --configuration Release --no-build
+      - name: Test core unit project
+        run: dotnet test --project tests/Tavily.Net/UnitTests/Tavily.Net.UnitTests.csproj --configuration Release --no-build
 
-      - name: Test integration tests
+      - name: Test AI unit project
+        run: dotnet test --project tests/Tavily.Net.Extensions.AI/UnitTests/Tavily.Net.Extensions.AI.UnitTests.csproj --configuration Release --no-build
+
+      - name: Test core integration project
         if: env.TAVILY_API_KEY != ''
-        run: dotnet test tests/integration-tests/Tavily.IntegrationTests.csproj --configuration Release --no-build
+        run: dotnet test --project tests/Tavily.Net/IntegrationTests/Tavily.Net.IntegrationTests.csproj --configuration Release --no-build
+
+      - name: Test AI integration project
+        if: env.TAVILY_API_KEY != ''
+        run: dotnet test --project tests/Tavily.Net.Extensions.AI/IntegrationTests/Tavily.Net.Extensions.AI.IntegrationTests.csproj --configuration Release --no-build
 
   calculate-version:
     name: Calculate release version
@@ -97,13 +104,27 @@ jobs:
           dotnet-version: 10.0.x
 
       - name: Restore
-        run: dotnet restore src/Tavily.Net.csproj
+        run: dotnet restore Tavily.Net.slnx
 
-      - name: Pack
-        run: dotnet pack src/Tavily.Net.csproj --configuration Release --no-restore --output artifacts -p:PublicRelease=true -p:ReleasePackageVersion="${{ needs.calculate-version.outputs.version }}"
+      - name: Pack both packages
+        run: |
+          dotnet pack src/Tavily.Net/Tavily.Net.csproj --configuration Release --no-restore --output artifacts -p:PublicRelease=true -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg -p:ReleasePackageVersion="${{ needs.calculate-version.outputs.version }}"
+          dotnet pack src/Tavily.Net.Extensions.AI/Tavily.Net.Extensions.AI.csproj --configuration Release --no-restore --output artifacts -p:PublicRelease=true -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg -p:ReleasePackageVersion="${{ needs.calculate-version.outputs.version }}"
 
-      - name: Publish to NuGet.org
-        run: dotnet nuget push "artifacts/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+      - name: Verify both package artifacts
+        shell: bash
+        run: |
+          for package in Tavily.Net Tavily.Net.Extensions.AI; do
+            test -f "artifacts/$package.${{ needs.calculate-version.outputs.version }}.nupkg"
+            test -f "artifacts/$package.${{ needs.calculate-version.outputs.version }}.snupkg"
+          done
+
+      - name: Publish both packages to NuGet.org
+        shell: bash
+        run: |
+          for package in Tavily.Net Tavily.Net.Extensions.AI; do
+            dotnet nuget push "artifacts/$package.${{ needs.calculate-version.outputs.version }}.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          done
 
       - name: Publish matching Release Drafter draft
         if: always()

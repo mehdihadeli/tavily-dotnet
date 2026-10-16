@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsTestProject>true</IsTestProject>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Tavily.Net.Extensions.AI\Tavily.Net.Extensions.AI.csproj" />
+    <Compile Include="..\..\Tavily.Net\UnitTests\TavilyUnitTestBase.cs" Link="TavilyUnitTestBase.cs" />
+  </ItemGroup>
+
+</Project>

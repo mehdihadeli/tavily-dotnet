@@ -1,7 +1,15 @@
 # AI tool wrappers
 
-The package provides `Microsoft.Extensions.AI` `AIFunction` wrappers for
-search and extraction. They use the same authenticated `TavilyClient`.
+The companion `Tavily.Net.Extensions.AI` package provides
+`Microsoft.Extensions.AI` `AIFunction` wrappers for search and extraction. It
+depends on `Tavily.Net` and uses the same authenticated `TavilyClient`.
+
+Install both packages:
+
+```bash
+dotnet add package Tavily.Net --prerelease
+dotnet add package Tavily.Net.Extensions.AI --prerelease
+```
 
 ```csharp
 using Microsoft.Extensions.AI;
